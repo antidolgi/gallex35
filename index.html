@@ -394,156 +394,147 @@
     </div>
 
     <script>
-        // Ждём загрузки всех скриптов
-        window.addEventListener('DOMContentLoaded', () => {
-            // Прелоадер
-            setTimeout(() => {
-                document.getElementById('preloader').classList.add('hide');
-            }, 2500);
+    // Ждём загрузки всех скриптов
+    window.addEventListener('DOMContentLoaded', () => {
+        // Прелоадер
+        setTimeout(() => {
+            const preloader = document.getElementById('preloader');
+            if (preloader) preloader.classList.add('hide');
+        }, 2000); // 2 секунды – достаточно быстро
 
-            // Lenis smooth scroll
-            const lenis = new Lenis({
-                duration: 1.2,
-                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
-            });
-            function raf(time) {
-                lenis.raf(time);
-                requestAnimationFrame(raf);
-            }
-            requestAnimationFrame(raf);
+        // Инициализация Lenis (один раз!)
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+        });
 
-            // GSAP & ScrollTrigger
-            gsap.registerPlugin(ScrollTrigger, DrawSVG);
+        // Интеграция Lenis с GSAP ScrollTrigger
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
+        });
 
-            // Анимация преимуществ
-            gsap.utils.toArray('.adv-card').forEach((card, i) => {
-                gsap.to(card, {
-                    opacity: 1, y: 0, duration: 0.8,
-                    scrollTrigger: { trigger: card, start: 'top 85%' },
-                    delay: i * 0.1
-                });
-            });
+        // Регистрируем плагины GSAP
+        gsap.registerPlugin(ScrollTrigger, DrawSVG);
 
-           // Lenis smooth scroll (подключаем до ScrollTrigger)
-const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
-});
-
-// Интеграция Lenis со ScrollTrigger
-lenis.on('scroll', ScrollTrigger.update);
-
-gsap.ticker.add((time) => {
-    lenis.raf(time * 1000); // GSAP ticker использует секунды, Lenis - миллисекунды
-});
-
-// Теперь ScrollTrigger
-gsap.registerPlugin(ScrollTrigger, DrawSVG);
-
-// Анимация линии таймлайна
-gsap.to('#drawLine', {
-    drawSVG: '100%',
-    ease: 'none',
-    scrollTrigger: {
-        trigger: '#timelineSteps',
-        start: 'top 70%',
-        end: 'bottom 30%',
-        scrub: true
-    }
-});
-
-// Анимация шагов
-gsap.utils.toArray('.step').forEach((step, i) => {
-    gsap.to(step, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        scrollTrigger: {
-            trigger: step,
-            start: 'top 80%',
-            toggleActions: 'play none none none'
-        },
-        delay: i * 0.1
-    });
-});
-
-            // Hero Swiper
-            new Swiper('.heroSwiper', {
-                effect: 'fade',
-                autoplay: { delay: 4000 },
-                loop: true,
-                allowTouchMove: false
-            });
-
-            // Отзывы Swiper
-            new Swiper('.reviewSwiper', {
-                slidesPerView: 1,
-                spaceBetween: 20,
-                pagination: { el: '.swiper-pagination', clickable: true },
-                breakpoints: { 768: { slidesPerView: 2 } }
-            });
-
-            // Splitting.js
-            if (typeof Splitting !== 'undefined') {
-                Splitting({ target: '.hero-title', by: 'chars' });
-                gsap.from('.hero-title .char', {
-                    opacity: 0, y: 20,
-                    stagger: 0.03,
-                    duration: 0.6,
-                    delay: 0.3
-                });
-            }
-
-            // Конструктор цветов
-            window.updateColor = function() {
-                const base = document.getElementById('baseColor').value;
-                const edge = document.getElementById('edgeColor').value;
-                const combos = {
-                    'combo1': 'assets/color-combo-1.webp',
-                    'combo2': 'assets/color-combo-2.webp',
-                    'combo3': 'assets/color-combo-3.webp',
-                    'combo4': 'assets/color-combo-4.webp'
-                };
-                let key = 'combo1';
-                if (edge === 'combo4') key = 'combo4';
-                else if (base === 'combo2' && edge === 'combo2') key = 'combo2';
-                else if (base === 'combo3') key = 'combo3';
-                document.getElementById('kovrikImg').src = combos[key];
-            };
-
-            // Магнитный эффект кнопок
-            document.querySelectorAll('.btn').forEach(btn => {
-                btn.addEventListener('mousemove', e => {
-                    const rect = btn.getBoundingClientRect();
-                    const x = e.clientX - rect.left - rect.width / 2;
-                    const y = e.clientY - rect.top - rect.height / 2;
-                    btn.style.transform = `translate(${x*0.2}px, ${y*0.2}px)`;
-                });
-                btn.addEventListener('mouseleave', () => btn.style.transform = '');
-                // Ripple
-                btn.addEventListener('click', function(e) {
-                    const ripple = document.createElement('span');
-                    ripple.className = 'ripple-effect';
-                    this.appendChild(ripple);
-                    const rect = this.getBoundingClientRect();
-                    ripple.style.left = e.clientX - rect.left - 15 + 'px';
-                    ripple.style.top = e.clientY - rect.top - 15 + 'px';
-                    setTimeout(() => ripple.remove(), 600);
-                });
-            });
-
-            // Форма
-            document.getElementById('orderForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                document.getElementById('thanksModal').style.display = 'flex';
-                e.target.reset();
-            });
-
-            // Хедер скролл
-            window.addEventListener('scroll', () => {
-                document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+        // Анимация преимуществ
+        gsap.utils.toArray('.adv-card').forEach((card, i) => {
+            gsap.to(card, {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 85%'
+                },
+                delay: i * 0.1
             });
         });
-    </script>
+
+        // Таймлайн: линия
+        gsap.to('#drawLine', {
+            drawSVG: '100%',
+            ease: 'none',
+            scrollTrigger: {
+                trigger: '#timelineSteps',
+                start: 'top 70%',
+                end: 'bottom 30%',
+                scrub: true
+            }
+        });
+
+        // Таймлайн: шаги
+        gsap.utils.toArray('.step').forEach((step, i) => {
+            gsap.to(step, {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                scrollTrigger: {
+                    trigger: step,
+                    start: 'top 80%',
+                    toggleActions: 'play none none none'
+                },
+                delay: i * 0.1
+            });
+        });
+
+        // Hero Swiper
+        new Swiper('.heroSwiper', {
+            effect: 'fade',
+            autoplay: { delay: 4000 },
+            loop: true,
+            allowTouchMove: false
+        });
+
+        // Отзывы Swiper
+        new Swiper('.reviewSwiper', {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            pagination: { el: '.swiper-pagination', clickable: true },
+            breakpoints: { 768: { slidesPerView: 2 } }
+        });
+
+        // Splitting.js
+        if (typeof Splitting !== 'undefined') {
+            Splitting({ target: '.hero-title', by: 'chars' });
+            gsap.from('.hero-title .char', {
+                opacity: 0,
+                y: 20,
+                stagger: 0.03,
+                duration: 0.6,
+                delay: 0.3
+            });
+        }
+
+        // Конструктор цветов
+        window.updateColor = function() {
+            const base = document.getElementById('baseColor').value;
+            const edge = document.getElementById('edgeColor').value;
+            const combos = {
+                'combo1': 'assets/color-combo-1.webp',
+                'combo2': 'assets/color-combo-2.webp',
+                'combo3': 'assets/color-combo-3.webp',
+                'combo4': 'assets/color-combo-4.webp'
+            };
+            let key = 'combo1';
+            if (edge === 'combo4') key = 'combo4';
+            else if (base === 'combo2' && edge === 'combo2') key = 'combo2';
+            else if (base === 'combo3') key = 'combo3';
+            document.getElementById('kovrikImg').src = combos[key];
+        };
+
+        // Магнитный эффект кнопок и ripple
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('mousemove', e => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+            });
+            btn.addEventListener('mouseleave', () => btn.style.transform = '');
+            btn.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple-effect';
+                this.appendChild(ripple);
+                const rect = this.getBoundingClientRect();
+                ripple.style.left = e.clientX - rect.left - 15 + 'px';
+                ripple.style.top = e.clientY - rect.top - 15 + 'px';
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Форма заказа
+        document.getElementById('orderForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            document.getElementById('thanksModal').style.display = 'flex';
+            e.target.reset();
+        });
+
+        // Хедер при скролле
+        window.addEventListener('scroll', () => {
+            document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+        });
+    });
+</script>
 </body>
 </html>
