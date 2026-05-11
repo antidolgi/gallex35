@@ -121,13 +121,66 @@
         .eva-drop { color: var(--accent-blue); font-size: 42px; margin: 20px 0; display: flex; align-items: center; justify-content: center; }
         .eva-drop i { font-size: 42px; }
 
-        /* Как мы работаем */
-        .timeline { padding: 80px 0; background: var(--bg-panel); }
-        .timeline-steps { position: relative; margin-top: 50px; }
-        .timeline-line { position: absolute; left: 36px; top: 0; bottom: 0; width: 2px; background: #333; }
-        .step { display: flex; align-items: flex-start; gap: 30px; margin-bottom: 60px; opacity: 0; }
-        .step-icon { font-size: 32px; color: var(--accent); background: var(--bg-dark); padding: 12px; border-radius: 50%; z-index: 2; }
+        /* Как мы работаем (Таймлайн) */
+.timeline {
+    padding: 80px 0;
+    background: var(--bg-panel);
+    position: relative;
+    z-index: 1;
+}
+.timeline .container {
+    position: relative;
+}
+.timeline-steps {
+    position: relative;
+    margin-top: 50px;
+}
+.timeline-line {
+    position: absolute;
+    left: 36px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #333;
+    z-index: 0;
+}
+.step {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    margin-bottom: 60px;
+    opacity: 1; /* По умолчанию показываем, а GSAP будет анимировать появление */
+    transform: translateY(30px); /* начальное смещение */
+    position: relative;
+    z-index: 2;
+    background: transparent; /* фон не нужен, текст сам по себе */
+    color: var(--white);
+}
+.step-icon {
+    font-size: 32px;
+    color: var(--accent);
+    background: var(--bg-dark);
+    padding: 12px;
+    border-radius: 50%;
+    z-index: 2;
+    flex-shrink: 0;
+}
+.step h3 {
+    font-family: var(--font-heading);
+    margin-bottom: 5px;
+}
+.step p {
+    opacity: 0.9;
+}
 
+/* Чтобы линия анимации показывалась корректно */
+#drawLine {
+    stroke: var(--accent);
+    stroke-width: 2;
+    fill: none;
+    stroke-dasharray: 600;
+    stroke-dashoffset: 600;
+}
         /* Отзывы */
         .reviews { padding: 80px 0; }
         .reviewSwiper .swiper-slide { background: var(--bg-panel); border-radius: var(--radius); padding: 30px; text-align: center; height: auto; }
@@ -371,24 +424,48 @@
                 });
             });
 
-            // Таймлайн (линия и шаги)
-            gsap.to('#drawLine', {
-                drawSVG: '100%',
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: '#timelineSteps',
-                    start: 'top 70%',
-                    end: 'bottom 20%',
-                    scrub: true
-                }
-            });
+           // Lenis smooth scroll (подключаем до ScrollTrigger)
+const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+});
 
-            gsap.utils.toArray('.step').forEach((step, i) => {
-                gsap.fromTo(step, { opacity: 0, y: 30 }, {
-                    opacity: 1, y: 0, duration: 0.6,
-                    scrollTrigger: { trigger: step, start: 'top 85%' }
-                });
-            });
+// Интеграция Lenis со ScrollTrigger
+lenis.on('scroll', ScrollTrigger.update);
+
+gsap.ticker.add((time) => {
+    lenis.raf(time * 1000); // GSAP ticker использует секунды, Lenis - миллисекунды
+});
+
+// Теперь ScrollTrigger
+gsap.registerPlugin(ScrollTrigger, DrawSVG);
+
+// Анимация линии таймлайна
+gsap.to('#drawLine', {
+    drawSVG: '100%',
+    ease: 'none',
+    scrollTrigger: {
+        trigger: '#timelineSteps',
+        start: 'top 70%',
+        end: 'bottom 30%',
+        scrub: true
+    }
+});
+
+// Анимация шагов
+gsap.utils.toArray('.step').forEach((step, i) => {
+    gsap.to(step, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        scrollTrigger: {
+            trigger: step,
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+        },
+        delay: i * 0.1
+    });
+});
 
             // Hero Swiper
             new Swiper('.heroSwiper', {
