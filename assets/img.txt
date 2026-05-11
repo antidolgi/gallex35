@@ -1,0 +1,4 @@
+ hero-slide-1.webp, hero-slide-2.webp, 
+hero-slide-3.webp, section-kovrik.webp,
+material-compare.webp, 
+color-combo-*.webp, review-*.webp в папку assets/
