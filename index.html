@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GALLEX35 — EVA-коврики для авто, дома и лодок | Индивидуальные 3D-коврики за 3 дня</title>
+    <meta name="description" content="Купить EVA-коврики с 3D-бортами для автомобиля. Более 500 лекал. Цвет на выбор. Оплата после примерки. Доставка по РФ. Производство в Вологде.">
+    <meta property="og:title" content="GALLEX35 — защита салона от грязи и влаги навсегда">
+    <meta property="og:description" content="Индивидуальные EVA-коврики за 3 дня. 150+ цветовых комбинаций. Бесплатный замер.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ваш-сайт.ru/">
+    <meta property="og:image" content="assets/hero-slide-1.webp">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>G</text></svg>">
+    <!-- Шрифты -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Russo+One&display=swap" rel="stylesheet">
+    <!-- Библиотеки -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/DrawSVG.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/splitting@1.0.6/dist/splitting.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@0.2.28/dist/lenis.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/phosphor-icons@1.4.2/src/index.min.js" defer></script>
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --bg-panel: #1E1E1E;
+            --accent: #FF5722;
+            --accent-blue: #00BFFF;
+            --silver: #B0B0B0;
+            --white: #FFFFFF;
+            --font-heading: 'Russo One', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --radius: 12px;
+            --transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-body); background: var(--bg-dark); color: var(--white); overflow-x: hidden; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+
+        /* Прелоадер */
+        #preloader {
+            position: fixed; inset: 0; background: var(--bg-dark); z-index: 9999;
+            display: flex; align-items: center; justify-content: center; transition: opacity 0.6s, visibility 0.6s;
+        }
+        #preloader.hide { opacity: 0; visibility: hidden; }
+        .preloader-svg { width: 150px; height: auto; }
+        .liquid-fill { fill: var(--accent); animation: fillUp 2.5s ease-in-out forwards; }
+        @keyframes fillUp {
+            0% { clip-path: inset(100% 0 0 0); }
+            100% { clip-path: inset(0 0 0 0); }
+        }
+
+        /* Хедер */
+        .header {
+            position: fixed; top: 0; left: 0; width: 100%; padding: 12px 0; z-index: 100;
+            transition: background 0.4s, backdrop-filter 0.4s;
+        }
+        .header.scrolled { background: rgba(18,18,18,0.8); backdrop-filter: blur(20px); }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: var(--font-heading); font-size: 24px; color: var(--accent); letter-spacing: 2px; }
+        .header-phone { font-weight: 600; color: var(--white); text-decoration: none; }
+        .header-cta {
+            background: transparent; border: 2px solid var(--accent); color: var(--accent);
+            padding: 8px 18px; border-radius: 30px; font-weight: 600; cursor: pointer; transition: var(--transition);
+        }
+        .header-cta:hover { background: var(--accent); color: #fff; }
+
+        /* Hero */
+        .hero { height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden; }
+        .hero-bg { position: absolute; inset: 0; z-index: 0; }
+        .hero .swiper { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+        .hero .swiper-slide { background-size: cover; background-position: center; height: 100%; }
+        .hero-content { position: relative; z-index: 2; max-width: 700px; margin-top: 60px; }
+        .hero-title { font-family: var(--font-heading); font-size: clamp(30px, 6vw, 52px); line-height: 1.2; margin-bottom: 20px; }
+        .hero-sub { font-size: 18px; opacity: 0.9; margin-bottom: 30px; }
+        .btn {
+            display: inline-block; background: var(--accent); color: #fff; font-weight: 700; text-decoration: none;
+            padding: 14px 32px; border-radius: 40px; position: relative; overflow: hidden;
+            box-shadow: 0 0 25px rgba(255,87,34,0.6); transition: transform 0.3s;
+        }
+        .btn:hover { transform: translateY(-3px); }
+        .ripple-effect { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.4); transform: scale(0); animation: ripple 0.6s linear; }
+        @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+
+        /* Преимущества */
+        .advantages { padding: 80px 0; }
+        .advantages-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 30px; }
+        .adv-card {
+            background: var(--bg-panel); border-radius: var(--radius); padding: 30px; text-align: center;
+            opacity: 0; transform: translateY(30px);
+        }
+        .adv-card i { font-size: 40px; color: var(--accent); margin-bottom: 20px; display: block; }
+        .adv-card h3 { font-family: var(--font-heading); font-size: 18px; margin-bottom: 10px; }
+
+        /* Конструктор цветов */
+        .constructor { padding: 80px 0; background: var(--bg-panel); }
+        .constructor-inner { display: flex; gap: 40px; align-items: center; flex-wrap: wrap; }
+        .color-selectors { flex: 1; min-width: 280px; }
+        .color-selectors select { width: 100%; padding: 12px; margin-bottom: 20px; background: #2a2a2a; color: #fff; border: 1px solid #444; border-radius: 8px; }
+        .color-preview { flex: 1; min-width: 280px; }
+        .color-preview img { width: 100%; border-radius: var(--radius); transition: opacity 0.5s; }
+
+        /* Почему EVA */
+        .why-eva { padding: 80px 0; }
+        .compare-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 30px; margin-top: 40px; }
+        .compare-item { background: var(--bg-panel); border-radius: var(--radius); padding: 40px 20px; text-align: center; }
+        .compare-item h3 { font-family: var(--font-heading); }
+        .eva-drop { color: var(--accent-blue); font-size: 32px; margin: 20px 0; }
+
+        /* Как мы работаем */
+        .timeline { padding: 80px 0; background: var(--bg-panel); }
+        .timeline-steps { position: relative; margin-top: 50px; }
+        .timeline-line { position: absolute; left: 36px; top: 0; bottom: 0; width: 2px; background: #333; }
+        .timeline-line-active { stroke: var(--accent); stroke-width: 2; fill: none; stroke-dasharray: 1000; stroke-dashoffset: 1000; }
+        .step { display: flex; align-items: flex-start; gap: 30px; margin-bottom: 60px; opacity: 0; }
+        .step-icon { font-size: 32px; color: var(--accent); background: var(--bg-dark); padding: 12px; border-radius: 50%; z-index: 2; }
+
+        /* Отзывы */
+        .reviews { padding: 80px 0; }
+        .reviews-swiper .swiper-slide { background: var(--bg-panel); border-radius: var(--radius); padding: 30px; text-align: center; }
+        .review-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto 20px; }
+
+        /* Футер */
+        .footer { background: #0a0a0a; padding: 40px 0; text-align: center; font-size: 14px; }
+        .footer a { color: var(--silver); text-decoration: none; margin: 0 10px; }
+        .footer .marquee { overflow: hidden; margin: 20px 0; white-space: nowrap; }
+        .marquee span { display: inline-block; padding-left: 100%; animation: marquee 15s linear infinite; color: var(--accent); font-weight: 700; }
+        @keyframes marquee { 0% { transform: translate(0,0); } 100% { transform: translate(-100%,0); } }
+
+        @media (max-width: 768px) {
+            .advantages-grid { grid-template-columns: 1fr 1fr; }
+            .compare-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Прелоадер -->
+    <div id="preloader">
+        <svg viewBox="0 0 150 50" class="preloader-svg">
+            <path class="liquid-fill" d="M0,50 h150 v-50 h-150 z" fill="#121212"/>
+            <text x="75" y="30" text-anchor="middle" font-family="Russo One" font-size="20" fill="#FF5722">GALLEX35</text>
+        </svg>
+    </div>
+
+    <!-- Хедер -->
+    <header class="header" id="header">
+        <div class="container header-inner">
+            <div class="logo">GALLEX35</div>
+            <a href="tel:89957886668" class="header-phone">8-995-788-66-68</a>
+            <button class="header-cta" onclick="document.querySelector('#order').scrollIntoView({behavior:'smooth'})">Заказать коврики</button>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <div class="swiper heroSwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide" style="background-image:url('assets/hero-slide-1.webp')"></div>
+                    <div class="swiper-slide" style="background-image:url('assets/hero-slide-2.webp')"></div>
+                    <div class="swiper-slide" style="background-image:url('assets/hero-slide-3.webp')"></div>
+                </div>
+            </div>
+        </div>
+        <div class="container hero-content">
+            <h1 class="hero-title" data-splitting>Защитите салон от грязи и влаги навсегда — индивидуальные EVA-коврики за 3 дня</h1>
+            <p class="hero-sub">Свыше 500 лекал для любых авто. Цвет на ваш выбор. Оплата после примерки. Доставка по всей РФ.</p>
+            <a href="#constructor" class="btn" id="heroBtn">Подобрать коврики</a>
+        </div>
+    </section>
+
+    <!-- Преимущества -->
+    <section class="advantages container">
+        <div class="advantages-grid">
+            <div class="adv-card"><i class="ph ph-shield-check"></i><h3>3D-борта 100%</h3><p>Закрывают периметр, не пропускают влагу</p></div>
+            <div class="adv-card"><i class="ph ph-wrench"></i><h3>Гарантия 2 года</h3><p>На материал и изготовление</p></div>
+            <div class="adv-card"><i class="ph ph-paint-brush"></i><h3>150+ комбинаций</h3><p>Цвет основы и канта</p></div>
+            <div class="adv-card"><i class="ph ph-truck"></i><h3>Изготовление 1-3 дня</h3><p>Доставка по всей РФ</p></div>
+        </div>
+    </section>
+
+    <!-- Конструктор цветов -->
+    <section class="constructor" id="constructor">
+        <div class="container constructor-inner">
+            <div class="color-selectors">
+                <h2 style="font-family:var(--font-heading);margin-bottom:20px">Собери свой дизайн</h2>
+                <label>Цвет основы</label>
+                <select id="baseColor" onchange="updateColor()">
+                    <option value="combo1">Черный</option>
+                    <option value="combo2">Серый</option>
+                    <option value="combo3">Бежевый</option>
+                </select>
+                <label>Цвет окантовки</label>
+                <select id="edgeColor" onchange="updateColor()">
+                    <option value="combo1">Оранжевый</option>
+                    <option value="combo2">Синий</option>
+                    <option value="combo4">Красный</option>
+                </select>
+                <button class="btn" style="margin-top:20px" onclick="alert('Ориентировочная стоимость комплекта: от 3500 руб.')">Рассчитать стоимость</button>
+            </div>
+            <div class="color-preview">
+                <img id="kovrikImg" src="assets/color-combo-1.webp" alt="Коврик">
+            </div>
+        </div>
+    </section>
+
+    <!-- Почему EVA -->
+    <section class="why-eva container">
+        <h2 style="font-family:var(--font-heading)">Почему EVA превосходит резину и текстиль</h2>
+        <div class="compare-grid">
+            <div class="compare-item"><h3>EVA</h3><div class="eva-drop">💧➔⬆️</div><p>Не впитывает воду, не гниёт, без запаха</p></div>
+            <div class="compare-item"><h3>Резина</h3><div>💧➔⚠️</div><p>Тяжёлая, может трескаться на морозе</p></div>
+            <div class="compare-item"><h3>Текстиль</h3><div>💧➔🧽</div><p>Впитывает грязь, трудно чистить</p></div>
+        </div>
+        <img src="assets/material-compare.webp" alt="Сравнение материалов" style="max-width:100%;margin-top:40px">
+    </section>
+
+    <!-- Как мы работаем -->
+    <section class="timeline">
+        <div class="container">
+            <h2 style="font-family:var(--font-heading);margin-bottom:40px">Как мы работаем</h2>
+            <div class="timeline-steps" id="timelineSteps">
+                <div class="timeline-line"><svg id="lineSVG" viewBox="0 0 2 600" preserveAspectRatio="none" style="width:2px;height:100%;position:absolute;top:0;left:36px"><path d="M1,0 L1,600" stroke="#FF5722" stroke-width="2" fill="none" stroke-dasharray="600" stroke-dashoffset="600" id="drawLine"/></svg></div>
+                <div class="step"><div class="step-icon"><i class="ph ph-ruler"></i></div><div><h3>Замер</h3><p>Подбираем лекало под ваш авто из базы 500+ моделей</p></div></div>
+                <div class="step"><div class="step-icon"><i class="ph ph-scissors"></i></div><div><h3>Раскрой</h3><p>Лазерная резка EVA высокой плотности</p></div></div>
+                <div class="step"><div class="step-icon"><i class="ph ph-cylinder"></i></div><div><h3>Формовка</h3><p>3D-борт формируется под давлением</p></div></div>
+                <div class="step"><div class="step-icon"><i class="ph ph-package"></i></div><div><h3>Упаковка и доставка</h3><p>Бережно упаковываем и отправляем за 1-3 дня</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Отзывы -->
+    <section class="reviews container">
+        <h2 style="font-family:var(--font-heading);margin-bottom:40px">Отзывы наших клиентов</h2>
+        <div class="swiper reviewSwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="assets/review-1.webp" class="review-img" alt="Отзыв"><p>"Лучшие коврики! Ни капли воды в салоне."</p><strong>Алексей, Вологда</strong></div>
+                <div class="swiper-slide"><img src="assets/review-2.webp" class="review-img" alt="Отзыв"><p>"Заказал на редкую модель — подошли идеально."</p><strong>Марина, Череповец</strong></div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <!-- Опт -->
+    <section class="container" style="padding:60px 0;text-align:center">
+        <h2 style="font-family:var(--font-heading)">Для оптовых клиентов</h2>
+        <p>Специальные условия для автосалонов и магазинов. <a href="tel:89957886668" style="color:var(--accent)">Свяжитесь с нами</a></p>
+    </section>
+
+    <!-- FAQ -->
+    <section class="container" style="padding:60px 0">
+        <h2 style="font-family:var(--font-heading)">Частые вопросы</h2>
+        <details><summary>Как ухаживать за ковриками?</summary><p>Достаточно протереть влажной тряпкой или помыть водой.</p></details>
+        <details><summary>Можно ли заказать на редкую модель?</summary><p>Да, свяжитесь с нами — подберём лекало.</p></details>
+    </section>
+
+    <!-- Форма заказа (контакты) -->
+    <section id="order" class="container" style="padding:60px 0">
+        <h2 style="font-family:var(--font-heading);margin-bottom:20px">Оставьте заявку</h2>
+        <form id="orderForm">
+            <input type="text" placeholder="Ваше имя" required style="padding:12px;width:100%;margin-bottom:15px;background:#2a2a2a;border:1px solid #444;color:#fff">
+            <input type="tel" placeholder="Телефон" required style="padding:12px;width:100%;margin-bottom:15px;background:#2a2a2a;border:1px solid #444;color:#fff">
+            <button type="submit" class="btn">Отправить заявку</button>
+        </form>
+        <p style="margin-top:20px">Или звоните: <a href="tel:89957886668" style="color:var(--accent)">8-995-788-66-68</a></p>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="marquee"><span>EVA – КОВРИКИ БУДУЩЕГО ⚡ EVA – КОВРИКИ БУДУЩЕГО</span></div>
+        <div>
+            <a href="privacy.html">Политика конфиденциальности</a>
+            <a href="agreement.html">Согласие на обработку данных</a>
+        </div>
+        <p style="margin-top:10px">© 2026 GALLEX35. Все права защищены.</p>
+        <p style="margin-top:5px">Разработка сайта: <a href="https://studio817.ru/banan" target="_blank" style="color:var(--accent)">Банановое Агенство 817</a></p>
+    </footer>
+
+    <!-- Модальное окно Спасибо -->
+    <div id="thanksModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:999;align-items:center;justify-content:center">
+        <div style="background:var(--bg-panel);padding:40px;border-radius:var(--radius);text-align:center">
+            <h3>Ваш заказ отправлен!</h3>
+            <p>Свяжемся для уточнения марки авто в течение 30 минут (работаем с 9 до 19).</p>
+            <p>Подпишитесь на наш ВК — там акции и розыгрыши комплекта ковриков. А ещё получите промокод на 500₽ за репост!</p>
+            <button onclick="document.getElementById('thanksModal').style.display='none'" class="btn">Закрыть</button>
+        </div>
+    </div>
+
+    <script>
+        // Прелоадер
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').classList.add('hide');
+            }, 2000);
+        });
+
+        // Lenis smooth scroll
+        const lenis = new Lenis();
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+
+        // GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger, DrawSVG);
+
+        // Анимация преимуществ
+        gsap.utils.toArray('.adv-card').forEach((card, i) => {
+            gsap.to(card, { opacity:1, y:0, duration:0.8, scrollTrigger:{ trigger:card, start:'top 85%' }, delay:i*0.1 });
+        });
+
+        // Таймлайн линия
+        gsap.to('#drawLine', { drawSVG:'100%', ease:'none', scrollTrigger:{ trigger:'#timelineSteps', start:'top 70%', end:'bottom 20%', scrub:true } });
+
+        // Шаги таймлайна
+        gsap.utils.toArray('.step').forEach((step, i) => {
+            gsap.to(step, { opacity:1, y:0, duration:0.6, scrollTrigger:{ trigger:step, start:'top 85%' } });
+        });
+
+        // Hero Swiper
+        new Swiper('.heroSwiper', { effect:'fade', autoplay:{ delay:4000 }, loop:true, allowTouchMove:false });
+
+        // Отзывы Swiper
+        new Swiper('.reviewSwiper', { slidesPerView:1, spaceBetween:20, pagination:{ el:'.swiper-pagination', clickable:true }, breakpoints:{ 768:{ slidesPerView:2 } } });
+
+        // Splitting.js
+        Splitting({ target: '.hero-title', by: 'chars' });
+        gsap.from('.hero-title .char', { opacity:0, y:20, stagger:0.03, duration:0.6, delay:0.2 });
+
+        // Конструктор цветов
+        function updateColor() {
+            const base = document.getElementById('baseColor').value;
+            const edge = document.getElementById('edgeColor').value;
+            // упрощённая логика: берём картинку, соответствующую выбору. Если combos совпадают, показываем картинку.
+            const combos = { 'combo1':'assets/color-combo-1.webp', 'combo2':'assets/color-combo-2.webp', 'combo3':'assets/color-combo-3.webp', 'combo4':'assets/color-combo-4.webp' };
+            let key = 'combo1'; // по умолчанию
+            if (edge === 'combo4') key = 'combo4';
+            else if (base === 'combo2' && edge === 'combo2') key = 'combo2';
+            else if (base === 'combo3') key = 'combo3';
+            document.getElementById('kovrikImg').src = combos[key];
+        }
+
+        // Магнитный эффект кнопок (упрощён)
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('mousemove', e => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width/2;
+                const y = e.clientY - rect.top - rect.height/2;
+                btn.style.transform = `translate(${x*0.2}px, ${y*0.2}px)`;
+            });
+            btn.addEventListener('mouseleave', () => btn.style.transform = '');
+            // Ripple
+            btn.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple-effect';
+                this.appendChild(ripple);
+                const rect = this.getBoundingClientRect();
+                ripple.style.left = e.clientX - rect.left - 15 + 'px';
+                ripple.style.top = e.clientY - rect.top - 15 + 'px';
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Форма
+        document.getElementById('orderForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            // Здесь можно отправку в Telegram, пока показываем "Спасибо"
+            document.getElementById('thanksModal').style.display = 'flex';
+            e.target.reset();
+        });
+
+        // Хедер скролл
+        window.addEventListener('scroll', () => {
+            document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Параллакс на Hero изображения (Vanilla-Tilt на слайдер)
+        document.querySelector('.hero-bg').setAttribute('data-tilt', '');
+        VanillaTilt.init(document.querySelector('.hero-bg'), { max:8, speed:400 });
+    </script>
+</body>
+</html>
